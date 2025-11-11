@@ -5,79 +5,303 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src = "index.js"></script>
 </head>
 <body>
-    <div class="invoice-container">
+     <div class="form-container">
+        <button id="showFormBtn" class="primary">Edit Invoice Details</button>
+        <button id="printBtn">Print Invoice</button>
+    </div>
+
+    <div id="invoiceContainer" class="invoice-container">
+    </div>
+
+    <div id="formModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h2>Edit Invoice Details</h2>
+            <form id="invoiceForm">
+                <fieldset>
+                    <legend>Company Information</legend>
+                    <div class="grid-3">
+                        <label>
+                            Company Name
+                            <input type="text" name="companyName" >
+                        </label>
+                        <label>
+                            Company Address
+                            <input type="text" name="companyAddress">
+                        </label>
+                        <label>
+                            City, State, PIN
+                            <input type="text" name="companyCityState">
+                        </label>
+                        <label>
+                            Telephone
+                            <input type="text" name="companyPhone">
+                        </label>
+                        <label>
+                            Email
+                            <input type="email" name="companyEmail">
+                        </label>
+                        <label>
+                            GSTIN
+                            <input type="text" name="companyGSTIN">
+                        </label>
+                        <label>
+                            State
+                            <input type="text" name="companyState">
+                        </label>
+                        <label>
+                            State Code
+                            <input type="text" name="companyStateCode">
+                        </label>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Invoice Details</legend>
+                    <div class="grid-3">
+                        <label>
+                            Invoice #
+                            <input type="text" name="invoiceNumber">
+                        </label>
+                        <label>
+                            Invoice Date
+                            <input type="date" name="invoiceDate">
+                        </label>
+                        <label>
+                            Payment Method
+                            <input type="text" name="paymentMethod">
+                        </label>
+                        <label>
+                            Due Amount
+                            <input type="number" name="dueAmount" step="0.01">
+                        </label>
+                        <label>
+                            Payment Due Date
+                            <input type="date" name="paymentDueDate">
+                        </label>
+                        <label>
+                            P.O Ref No
+                            <input type="text" name="poRefNumber">
+                        </label>
+                        <label>
+                            Vehicle No
+                            <input type="text" name="vehicleNumber">
+                        </label>
+                        <label>
+                            Transporter
+                            <input type="text" name="transporter">
+                        </label>
+                        <label>
+                            Eway Bill No
+                            <input type="text" name="ewayBillNumber">
+                        </label>
+                        <label>
+                            Place of Supply
+                            <input type="text" name="placeOfSupply">
+                        </label>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Customer Information</legend>
+                    <div class="grid-2">
+                        <div>
+                            <h3>Bill To</h3>
+                            <label>
+                                Customer Name
+                                <input type="text" name="billToName">
+                            </label>
+                            <label>
+                                Address
+                                <textarea name="billToAddress" rows="3"></textarea>
+                            </label>
+                            <label>
+                                Phone
+                                <input type="text" name="billToPhone" >
+                            </label>
+                            <label>
+                                GSTIN
+                                <input type="text" name="billToGSTIN">
+                            </label>
+                            <label>
+                                State
+                                <input type="text" name="billToState" >
+                            </label>
+                            <label>
+                                State Code
+                                <input type="text" name="billToStateCode">
+                            </label>
+                        </div>
+                        <div>
+                            <h3>Ship To</h3>
+                            <label>
+                                Customer Name
+                                <input type="text" name="shipToName">
+                            </label>
+                            <label>
+                                Address
+                                <textarea name="shipToAddress" rows="3"></textarea>
+                            </label>
+                            <label>
+                                Phone
+                                <input type="text" name="shipToPhone">
+                            </label>
+                            <label>
+                                GSTIN
+                                <input type="text" name="shipToGSTIN">
+                            </label>
+                            <label>
+                                State
+                                <input type="text" name="shipToState">
+                            </label>
+                            <label>
+                                State Code
+                                <input type="text" name="shipToStateCode">
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Items</legend>
+                    <div class="items-form" id="itemsContainer">
+                        <div class="items-form-row">
+                            <label>Item Description</label>
+                            <label>HSN</label>
+                            <label>Qty</label>
+                            <label>Price/Unit (₹)</label>
+                            <label>Tax (GST)</label>
+                            <label>Taxable Value</label>
+                            <label>Actions</label>
+                        </div>
+                    </div>
+                    <button type="button" id="addItemBtn" class="primary">Add Item</button>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Tax Details</legend>
+                    <div class="grid-3">
+                        <label>
+                            CGST
+                            <input type="number" name="cgst" step="0.01">
+                        </label>
+                        <label>
+                            SGST
+                            <input type="number" name="sgst" step="0.01">
+                        </label>
+                        <label>
+                            Additional Discount
+                            <input type="number" name="additionalDiscount" step="0.01">
+                        </label>
+                        <label>
+                            Round off
+                            <input type="number" name="roundOff" step="0.01">
+                        </label>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Bank Details</legend>
+                    <div class="grid-3">
+                        <label>
+                            Bank Name
+                            <input type="text" name="bankName">
+                        </label>
+                        <label>
+                            Payee
+                            <input type="text" name="payee">
+                        </label>
+                        <label>
+                            Account Number
+                            <input type="text" name="accountNumber">
+                        </label>
+                        <label>
+                            IFSC Code
+                            <input type="text" name="ifscCode">
+                        </label>
+                        <label>
+                            Branch
+                            <input type="text" name="branch" >
+                        </label>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Other Details</legend>
+                    <label>
+                        Terms and Conditions
+                        <textarea name="termsConditions" rows="3">We do not accept return when product is sold</textarea>
+                    </label>
+                </fieldset>
+
+                <div class="actions">
+                    <button type="button" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="primary">Generate Invoice</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script id="invoice-template" type="text/x-handlebars-template">
         <div class="header">
             <div class="company-logo">
-                 <img src="data:image/png;base64,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" alt="company-logo">
+                <img src="data:image/png;base64,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" alt="company-logo">
             </div>
             <div class="company-name-add">
                 <div class="tax-invoice">TAX INVOICE</div>
-                <div class="company-name">RV ENTERPRISES</div>
-                <div class="company-add">221 DDA Building, Laxmi Nagar, New Market Area</div>
-                <div class="company-add">New Delhi - 110092</div>
-                 
+                <div class="company-name">{{companyName}}</div>
+                <div class="company-add">{{companyAddress}}</div>
+                <div class="company-add">{{companyCityState}}</div>
             </div>
             <div class="company-details">
-                 <div class="tax-invoice"><strong>TEL:</strong> +91 98765432210</div>
-                 <div class="company-name"><strong>Email:</strong> support@goyalmart.com</div>
-                <div class="company-add"><strong>GSTIN:</strong> 07CZCPS9257G1ZA</div>
-                <div class="company-add"><strong>State:</strong> New Delhi</div>
-                <div class="company-add"><strong>State Code:</strong> 09</div>
+                <div class="tax-invoice"><strong>TEL:</strong> {{companyPhone}}</div>
+                <div class="company-name"><strong>Email:</strong> {{companyEmail}}</div>
+                <div class="company-add"><strong>GSTIN:</strong> {{companyGSTIN}}</div>
+                <div class="company-add"><strong>State:</strong> {{companyState}}</div>
+                <div class="company-add"><strong>State Code:</strong> {{companyStateCode}}</div>
             </div>
-
         </div>
 
         <div class="grid-container details-grid">
-            
             <div class="grid-col border-right">
-                <p><strong>Invoice #:</strong> EDTOQ0912829</p>
-                <p><strong>Invoice Date:</strong> 17 Oct 2024, 11:50 PM</p>
-                <p><strong>Payment Method:</strong> NEFT/ RTGS</p>
-                <p><strong>Due Amount:</strong> ₹1,92,932.00</p>
-                <p><strong>Payment Due Date:</strong> 29 Oct 2024</p>
+                <p><strong>Invoice #:</strong> {{invoiceNumber}}</p>
+                <p><strong>Invoice Date:</strong> {{formatDate invoiceDate}}</p>
+                <p><strong>Payment Method:</strong> {{paymentMethod}}</p>
+                <p><strong>Due Amount:</strong> ₹{{formatCurrency dueAmount}}</p>
+                <p><strong>Payment Due Date:</strong> {{formatDate paymentDueDate}}</p>
             </div>
-            
-            <div class="grid-col align-right ">
-                <p><strong>P.O Ref No:</strong> EDTOQ0912829</p>
-                <p><strong>Vehicle No:</strong> UP 16 AX 6904</p>
-                <p><strong>Transporter:</strong> Suhana Safar Travel</p>
-                <p><strong>Eway Bill No:</strong> EDTOQ0912829121</p>
-                <p><strong>Place of Supply:</strong> CM House Gorakhpur</p>
+            <div class="grid-col align-right">
+                <p><strong>P.O Ref No:</strong> {{poRefNumber}}</p>
+                <p><strong>Vehicle No:</strong> {{vehicleNumber}}</p>
+                <p><strong>Transporter:</strong> {{transporter}}</p>
+                <p><strong>Eway Bill No:</strong> {{ewayBillNumber}}</p>
+                <p><strong>Place of Supply:</strong> {{placeOfSupply}}</p>
             </div>
-
         </div>
-
-    
 
         <div class="grid-container customer-grid">
-
             <div class="grid-col border-right bottom-border">
                 <p>
-                    <strong>Bill To:</strong>Shyam Construction Pvt Ltd<br>
-                    <strong>Address:</strong>Label, 221 DDA Building, Laxmi Nagar, Lajpat Nagar, East<br>
-                    Delhi New Delhi - 110092<br>
-                    <strong>Ph:</strong> 0120 - 456789<br>
-                    <strong>GSTIN:</strong> 09CZCPS9257G1ZA<br>
-                    <strong>State:</strong> New Delhi <strong>State Code:</strong> 09
+                    <strong>Bill To:</strong> {{billToName}}<br>
+                    <strong>Address:</strong> {{billToAddress}}<br>
+                    <strong>Ph:</strong> {{billToPhone}}<br>
+                    <strong>GSTIN:</strong> {{billToGSTIN}}<br>
+                    <strong>State:</strong> {{billToState}} <strong>State Code:</strong> {{billToStateCode}}
                 </p>
             </div>
-
             <div class="grid-col bottom-border">
                 <p>
-                    <strong>Ship To:</strong>Shyam Construction Pvt Ltd<br>
-                    <strong>Address:</strong>Label, 221 DDA Building, Laxmi Nagar, Lajpat Nagar, East<br>
-                    Delhi New Delhi - 110092<br>
-                    <strong>Ph:</strong> 011 - 987654<br>
-                    <strong>GSTIN:</strong> 09CZCPS9257G1ZA<br>
-                    <strong>State:</strong> New Delhi <strong>State Code:</strong> 09
+                    <strong>Ship To:</strong> {{shipToName}}<br>
+                    <strong>Address:</strong> {{shipToAddress}}<br>
+                    <strong>Ph:</strong> {{shipToPhone}}<br>
+                    <strong>GSTIN:</strong> {{shipToGSTIN}}<br>
+                    <strong>State:</strong> {{shipToState}} <strong>State Code:</strong> {{shipToStateCode}}
                 </p>
             </div>
-
         </div>
-
-      <!-- <hr>   -->
 
         <div class="items-table">
             <table>
@@ -93,140 +317,55 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tbody>
+                    {{#each items}}
                     <tr>
-                        <td>1</td>
-                        <td>UCB Water Bottle 600 ml, Blue</td>
-                        <td>0803</td>
-                        <td class="text-right">1000</td>
-                        <td class="text-right">883.00</td>
-                        <td class="text-right">18%</td>
-                        <td class="text-right">987.13</td>
+                        <td>{{@index}}</td>
+                        <td>{{description}}</td>
+                        <td>{{hsn}}</td>
+                        <td class="text-right">{{quantity}}</td>
+                        <td class="text-right">{{formatCurrency price}}</td>
+                        <td class="text-right">{{taxRate}}%</td>
+                        <td class="text-right">{{formatCurrency taxableValue}}</td>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>UCB Water Bottle 600 ml, Blue</td>
-                        <td>0803</td>
-                        <td class="text-right">1000</td>
-                        <td class="text-right">883.00</td>
-                        <td class="text-right">18%</td>
-                        <td class="text-right">987.13</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>UCB Water Bottle 600 ml, Blue</td>
-                        <td>0803</td>
-                        <td class="text-right">1000</td>
-                        <td class="text-right">883.00</td>
-                        <td class="text-right">18%</td>
-                        <td class="text-right">987.13</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>UCB Water Bottle 600 ml, Blue</td>
-                        <td>0803</td>
-                        <td class="text-right">1000</td>
-                        <td class="text-right">883.00</td>
-                        <td class="text-right">18%</td>
-                        <td class="text-right">987.13</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>UCB Water Bottle 600 ml, Blue</td>
-                        <td>0803</td>
-                        <td class="text-right">1000</td>
-                        <td class="text-right">883.00</td>
-                        <td class="text-right">18%</td>
-                        <td class="text-right">987.13</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>UCB Water Bottle 600 ml, Blue</td>
-                        <td>0803</td>
-                        <td class="text-right">1000</td>
-                        <td class="text-right">883.00</td>
-                        <td class="text-right">18%</td>
-                        <td class="text-right">987.13</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>UCB Water Bottle 600 ml, Blue</td>
-                        <td>0803</td>
-                        <td class="text-right">1000</td>
-                        <td class="text-right">883.00</td>
-                        <td class="text-right">18%</td>
-                        <td class="text-right">987.13</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>UCB Water Bottle 600 ml, Blue</td>
-                        <td>0803</td>
-                        <td class="text-right">1000</td>
-                        <td class="text-right">883.00</td>
-                        <td class="text-right">18%</td>
-                        <td class="text-right">987.13</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>UCB Water Bottle 600 ml, Blue</td>
-                        <td>0803</td>
-                        <td class="text-right">1000</td>
-                        <td class="text-right">883.00</td>
-                        <td class="text-right">18%</td>
-                        <td class="text-right">987.13</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>Shipping Charges</td>
-                        <td></td>
-                        <td class="text-right"></td>
-                        <td class="text-right">100.00</td>
-                        <td class="text-right">18%</td>
-                        <td class="text-right">100.00</td>
-                    </tr>
+                    {{/each}}
                     <tr class="total">
-                        <td colspan="2">Total</td> 
-                        <td>3</td>
+                        <td colspan="2">Total</td>
+                        <td>{{items.length}}</td>
                         <td></td>
                         <td></td>
-                        <td class="text-right" colspan="2">1234.43</td> 
+                        <td class="text-right" colspan="2">{{formatCurrency totalAmount}}</td>
                     </tr>
-
-                
-                    </tbody>
+                </tbody>
             </table>
-
         </div>
 
         <div class="final-amount">
-             <div class="values">
-            </div>
+            <div class="values"></div>
             <div class="values">
                 <div class="value">
                     <p>Net Taxable Amount</p>
-                    <p>₹1232.43</p>
+                    <p>₹{{formatCurrency netTaxableAmount}}</p>
                 </div>
                 <div class="value">
                     <p>CGST</p>
-                    <p>120.00</p>
+                    <p>{{formatCurrency cgst}}</p>
                 </div>
                 <div class="value">
                     <p>SGST</p>
-                    <p>120.00</p>
+                    <p>{{formatCurrency sgst}}</p>
                 </div>
                 <div class="value">
                     <p>Additional Discount</p>
-                    <p>₹100.00</p>
+                    <p>₹{{formatCurrency additionalDiscount}}</p>
                 </div>
                 <div class="value">
                     <p>Round off</p>
-                    <p>₹0.43</p>
+                    <p>₹{{formatCurrency roundOff}}</p>
                 </div>
                 <div class="value">
                     <p><strong>Total Amount</strong></p>
-                    <p><strong>₹1372.00</strong></p>
+                    <p><strong>₹{{formatCurrency totalAmount}}</strong></p>
                 </div>
-                
             </div>
         </div>
 
@@ -244,54 +383,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{#each taxDetails}}
                     <tr>
-                        <td>5%</td>
-                        <td class="text-right">10989.09</td>
-                        <td>2.5%</td>
-                        <td class="text-right">450</td>
-                        <td>2.5%</td>
-                        <td class="text-right">450</td>
-                        <td class="text-right">987.20</td>
+                        <td>{{rate}}%</td>
+                        <td class="text-right">{{formatCurrency taxableAmount}}</td>
+                        <td>{{cgstRate}}%</td>
+                        <td class="text-right">{{formatCurrency cgstAmount}}</td>
+                        <td>{{sgstRate}}%</td>
+                        <td class="text-right">{{formatCurrency sgstAmount}}</td>
+                        <td class="text-right">{{formatCurrency totalTax}}</td>
                     </tr>
-                    <tr>
-                        <td>12%</td>
-                        <td class="text-right">8392.11</td>
-                        <td>9%</td>
-                        <td class="text-right">920</td>
-                        <td>9%</td>
-                        <td class="text-right">920</td>
-                        <td class="text-right">822.15</td>
-                    </tr>
-                    <tr>
-                        <td>18%</td>
-                        <td class="text-right">8392.11</td>
-                        <td>9%</td>
-                        <td class="text-right">920</td>
-                        <td>9%</td>
-                        <td class="text-right">920</td>
-                        <td class="text-right">782.05</td>
-                    </tr>
-                    <tr>
-                        <td>28%</td>
-                        <td class="text-right">8392.11</td>
-                        <td>9%</td>
-                        <td class="text-right">920</td>
-                        <td>9%</td>
-                        <td class="text-right">920</td>
-                        <td class="text-right">120.30</td>
-                    </tr>
+                    {{/each}}
                 </tbody>
             </table>
         </div>
 
         <div class="amount-in-words">
-            <strong>Total Amount (in words):</strong> Nine Thousand Nine Hundred Fifty Five Rupees only
+            <strong>Total Amount (in words):</strong> {{amountInWords}}
         </div>
-        
 
-        <!-- Bank Details Section -->
         <div class="bank-details">
-            
             <div class="bank-info">
                 <div class="bank-column">
                     <div class="bank-row">
@@ -299,23 +410,23 @@
                     </div>
                     <div class="bank-row">
                         <span class="bank-label">Bank Name:</span>
-                        <span class="bank-value">HDFC Bank</span>
+                        <span class="bank-value">{{bankName}}</span>
                     </div>
                     <div class="bank-row">
                         <span class="bank-label">Payee:</span>
-                        <span class="bank-value">RV Enterprises</span>
+                        <span class="bank-value">{{payee}}</span>
                     </div>
                     <div class="bank-row">
                         <span class="bank-label">Account Number:</span>
-                        <span class="bank-value">1534883001203</span>
+                        <span class="bank-value">{{accountNumber}}</span>
                     </div>
                     <div class="bank-row">
                         <span class="bank-label">IFSC Code:</span>
-                        <span class="bank-value">HDFC00002312</span>
+                        <span class="bank-value">{{ifscCode}}</span>
                     </div>
                     <div class="bank-row">
                         <span class="bank-label">Branch:</span>
-                        <span class="bank-value">JHANDEWALAN BRANCH</span>
+                        <span class="bank-value">{{branch}}</span>
                     </div>
                     <div class="bank-row">
                         <span class="bank-label">UPI QR:</span>
@@ -334,18 +445,17 @@
             <div class="footer-section">
                 <div class="terms-conditions">
                     <p><strong>Terms and Conditions:</strong></p>
-                    <p>We do not accept return when product is sold</p>
+                    <p>{{termsConditions}}</p>
                 </div>
                 <div class="generated-note">
                     This is a computer generated invoice
                 </div>
-
                 <div class="signature-area">
                     <div class="signature-line">Authorised Signatory</div>
                 </div>
             </div>
-            </div>
-            </div>
+        </div>
+    </script>
 
         </div>
 
